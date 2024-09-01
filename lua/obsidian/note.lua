@@ -713,7 +713,8 @@ Note.save = function(self, opts)
     end)
   elseif self.title ~= nil then
     -- Add a header.
-    table.insert(content, "# " .. self.title)
+    -- 不要なのでコメントアウト
+    -- table.insert(content, "# " .. self.title)
   end
 
   -- Pass content through callback.
@@ -763,7 +764,8 @@ Note.save_to_buffer = function(self, opts)
   end
 
   if util.buffer_is_empty(bufnr) and self.title ~= nil then
-    table.insert(new_lines, "# " .. self.title)
+    -- 不要なのでコメントアウト
+    -- table.insert(new_lines, "# " .. self.title)
   end
 
   ---@type string[]
