@@ -136,7 +136,7 @@ obsidian.setup = function(opts)
 
       -- Register mappings.
       for mapping_keys, mapping_config in pairs(opts.mappings) do
-        vim.keymap.set("n", mapping_keys, mapping_config.action, mapping_config.opts)
+        vim.keymap.set(mapping_config.mode or "n", mapping_keys, mapping_config.action, mapping_config.opts)
       end
 
       -- Inject Obsidian as a cmp source.
