@@ -235,15 +235,6 @@ source.complete = function(_, request, callback)
 
         for alias in iter(aliases) do
           update_completion_options(alias)
-          local alias_case_matched = util.match_case(search, alias)
-
-          if
-            alias_case_matched ~= nil
-            and alias_case_matched ~= alias
-            and not util.tbl_contains(note.aliases, alias_case_matched)
-          then
-            update_completion_options(alias_case_matched)
-          end
         end
 
         if note.alt_alias ~= nil then
