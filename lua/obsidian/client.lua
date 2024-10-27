@@ -669,18 +669,8 @@ Client.resolve_note_async = function(self, query, callback, opts)
       ---@cast note obsidian.Note
 
       local reference_ids = note:reference_ids { lowercase = true }
-
-      -- Check for exact match.
       if util.tbl_contains(reference_ids, query_lwr) then
         table.insert(exact_matches, note)
-      else
-        -- Fall back to fuzzy match.
-        for ref_id in iter(reference_ids) do
-          if util.string_contains(ref_id, query_lwr) then
-            table.insert(fuzzy_matches, note)
-            break
-          end
-        end
       end
     end
 
