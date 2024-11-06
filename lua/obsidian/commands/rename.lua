@@ -11,31 +11,6 @@ local compat = require "obsidian.compat"
 
 ---@param client obsidian.Client
 return function(client, data)
-  -- Validate args.
-  local dry_run = false
-  ---@type string|?
-  local arg
-
-  if data.args == "--dry-run" then
-    dry_run = true
-    data.args = nil
-  end
-
-  if data.args ~= nil and string.len(data.args) > 0 then
-    arg = util.strip_whitespace(data.args)
-  else
-    arg = util.input("Enter new note ID/name/path: ", { completion = "file" })
-    if not arg or string.len(arg) == 0 then
-      log.warn "Rename aborted"
-      return
-    end
-  end
-
-  if vim.endswith(arg, " --dry-run") then
-    dry_run = true
-    arg = util.strip_whitespace(string.sub(arg, 1, -string.len " --dry-run" - 1))
-  end
-
   -- Resolve the note to rename.
   ---@type boolean
   local is_current_buf
@@ -77,6 +52,31 @@ return function(client, data)
 
   assert(cur_note_path)
   local dirname = assert(cur_note_path:parent(), string.format("failed to resolve parent of '%s'", cur_note_path))
+
+  -- Validate args.
+  local dry_run = false
+  ---@type string|?
+  local arg
+
+  if data.args == "--dry-run" then
+    dry_run = true
+    data.args = nil
+  end
+
+  if data.args ~= nil and string.len(data.args) > 0 then
+    arg = util.strip_whitespace(data.args)
+  else
+    arg = util.input("Enter new note ID/name/path: ", { completion = "file", default = cur_note_id })
+    if not arg or string.len(arg) == 0 then
+      log.warn "Rename aborted"
+      return
+    end
+  end
+
+  if vim.endswith(arg, " --dry-run") then
+    dry_run = true
+    arg = util.strip_whitespace(string.sub(arg, 1, -string.len " --dry-run" - 1))
+  end
 
   -- Parse new note ID / path from args.
   local parts = vim.split(arg, "/", { plain = true })
