@@ -188,7 +188,7 @@ return function(client, data)
     cur_note.id = new_note_id
     cur_note.path = Path.new(new_note_path)
     if not dry_run then
-      cur_note:save()
+      cur_note:save { insert_frontmatter = false }
     else
       log.info("Dry run: updating frontmatter of '" .. tostring(new_note_path) .. "'")
     end
