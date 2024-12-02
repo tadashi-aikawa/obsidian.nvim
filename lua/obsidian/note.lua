@@ -438,10 +438,6 @@ Note.from_lines = function(lines, path, opts)
       -- Check for title/header and collect anchor link.
       local header_match = util.parse_header(line)
       if header_match then
-        if not title and header_match.level == 1 then
-          title = header_match.header
-        end
-
         -- Collect anchor link.
         if opts.collect_anchor_links then
           assert(anchor_links)
