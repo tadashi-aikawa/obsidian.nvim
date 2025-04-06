@@ -4,6 +4,18 @@ local util = require "obsidian.util"
 local strings = require "plenary.strings"
 local Note = require "obsidian.note"
 
+function Print_table(t, indent)
+  indent = indent or ""
+  for k, v in pairs(t) do
+    if type(v) == "table" then
+      print(indent .. k .. ":")
+      Print_table(v, indent .. "  ")
+    else
+      print(indent .. k .. ": " .. tostring(v))
+    end
+  end
+end
+
 ---@class obsidian.Picker : obsidian.ABC
 ---
 ---@field client obsidian.Client
