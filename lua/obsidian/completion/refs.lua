@@ -33,22 +33,25 @@ end
 ---@return boolean, string|?, integer|?, integer|?, obsidian.completion.RefType|?
 M.can_complete = function(request)
   local input, search = find_search_start(request.context.cursor_before_line)
-  if input == nil or search == nil or string.len(search) == 0 or util.is_whitespace(search) then
+  if input == nil or search == nil then
+    return false
+  elseif string.len(search) == 0 or util.is_whitespace(search) then
     return false
   end
 
-  local until_cursor_len = vim.str_utfindex(request.context.cursor_before_line, #request.context.cursor_before_line)
-  local cursor_col = vim.str_utfindex(request.context.cursor.col)
-  local input_len = vim.str_utfindex(input, #input)
-
   if vim.startswith(input, "[[") then
-    return true, search, until_cursor_len - input_len, cursor_col, M.RefType.Wiki
+    local suffix = string.sub(request.context.cursor_after_line, 1, 2)
+    local cursor_col = request.context.cursor.col
+    local insert_end_offset = suffix == "]]" and 1 or -1
+    return true, search, cursor_col - 1 - #input, cursor_col + insert_end_offset, M.RefType.Wiki
+  elseif vim.startswith(input, "[") then
+    local suffix = string.sub(request.context.cursor_after_line, 1, 1)
+    local cursor_col = request.context.cursor.col
+    local insert_end_offset = suffix == "]" and 0 or -1
+    return true, search, cursor_col - 1 - #input, cursor_col + insert_end_offset, M.RefType.Markdown
+  else
+    return false
   end
-  if vim.startswith(input, "[") then
-    return true, search, until_cursor_len - input_len, cursor_col, M.RefType.Markdown
-  end
-
-  return false
 end
 
 M.get_trigger_characters = function()
