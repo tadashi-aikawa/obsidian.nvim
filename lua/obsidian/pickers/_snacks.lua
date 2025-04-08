@@ -159,7 +159,7 @@ SnacksPicker.pick = function(self, values, opts)
   local map = vim.tbl_deep_extend("force", {}, selection_mappings(opts.selection_mappings))
 
   local pick_opts = vim.tbl_extend("force", map or {}, {
-    tilte = opts.prompt_title,
+    title = opts.prompt_title,
     items = entries,
     layout = {
       preview = false,
