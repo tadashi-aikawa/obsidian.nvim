@@ -162,8 +162,7 @@ SnacksPicker.pick = function(self, values, opts)
     tilte = opts.prompt_title,
     items = entries,
     layout = {
-      -- INFO: [modified] false -> true
-      preview = true,
+      preview = false,
     },
     format = "text",
     confirm = function(picker, item, action)
