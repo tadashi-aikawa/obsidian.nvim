@@ -162,9 +162,14 @@ SnacksPicker.pick = function(self, values, opts)
     title = opts.prompt_title,
     items = entries,
     layout = {
-      preview = false,
+      preview = true,
     },
     format = "text",
+    preview = function(ctx)
+      ctx.preview:set_lines(vim.fn.readfile(ctx.item.filename))
+      ctx.preview:loc()
+      ctx.preview:highlight { ft = "markdown" }
+    end,
     confirm = function(picker, item, action)
       picker:close()
       if item then
