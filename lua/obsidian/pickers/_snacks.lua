@@ -3,10 +3,6 @@
   Original PR: https://github.com/obsidian-nvim/obsidian.nvim/pull/4
   License: MIT (https://github.com/obsidian-nvim/obsidian.nvim/blob/main/LICENSE)
   Retrieved on: [2025-04-06]
-
-  Modifications:
-  - ` INFO: [added]` comments indicate lines that were added to the original code.
-  - ` INFO: [modified]` comments indicate lines that were modified from the original code.
 --]]
 local snacks_picker = require "snacks.picker"
 
@@ -16,7 +12,6 @@ local Picker = require "obsidian.pickers.picker"
 
 ---@param mapping table
 ---@return table
--- INFO: [modified] function name
 local function selection_mappings(mapping)
   if type(mapping) == "table" then
     local opts = { win = { input = { keys = {} } }, actions = {} }
@@ -37,7 +32,6 @@ local function selection_mappings(mapping)
   return {}
 end
 
--- INFO: [added]
 ---@param mapping table
 ---@return table
 local function query_mappings(mapping)
@@ -135,8 +129,6 @@ SnacksPicker.pick = function(self, values, opts)
 
   opts = opts or {}
 
-  local buf = opts.buf or vim.api.nvim_get_current_buf()
-
   local entries = {}
   for _, value in ipairs(values) do
     if type(value) == "string" then
@@ -148,9 +140,7 @@ SnacksPicker.pick = function(self, values, opts)
       local name = self:_make_display(value)
       table.insert(entries, {
         text = name,
-        buf = buf,
-        filename = value.filename,
-        value = value.value,
+        file = value.filename,
         pos = { value.lnum, value.col or 0 },
       })
     end
@@ -165,11 +155,6 @@ SnacksPicker.pick = function(self, values, opts)
       preview = true,
     },
     format = "text",
-    preview = function(ctx)
-      ctx.preview:set_lines(vim.fn.readfile(ctx.item.filename))
-      ctx.preview:loc()
-      ctx.preview:highlight { ft = "markdown" }
-    end,
     confirm = function(picker, item, action)
       picker:close()
       if item then
