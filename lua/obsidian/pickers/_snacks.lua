@@ -74,12 +74,18 @@ SnacksPicker.find_files = function(self, opts)
 
   local selection_map = selection_mappings(opts.selection_mappings) or {}
   local query_map = query_mappings(opts.query_mappings) or {}
-  local map = vim.tbl_deep_extend("force", {}, selection_map, query_map)
+  local source_set = opts.recent and {
+    source = "recent",
+    filter = { cwd = true },
+  } or {
+    source = "files",
+    cwd = tostring(dir),
+  }
+
+  local map = vim.tbl_deep_extend("force", {}, selection_map, query_map, source_set)
 
   local pick_opts = vim.tbl_extend("force", map or {}, {
-    source = "files",
     title = opts.prompt_title,
-    cwd = tostring(dir),
     confirm = function(picker, item, action)
       picker:close()
       if item then
