@@ -354,7 +354,7 @@ Picker._note_selection_mappings = function(self)
           note = Note.from_file(note_or_path)
         end
         local link = self.client:format_link(note, {})
-        vim.api.nvim_put({ link }, "", false, true)
+        vim.api.nvim_put({ link }, "", true, true)
         self.client:update_ui()
       end,
     }
