@@ -148,6 +148,7 @@ SnacksPicker.pick = function(self, values, opts)
         text = name,
         file = value.filename,
         pos = { value.lnum, value.col or 0 },
+        value = value.value,
       })
     end
   end
