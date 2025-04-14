@@ -345,16 +345,14 @@ Picker._note_selection_mappings = function(self)
   if self.client.opts.picker.note_mappings and key_is_set(self.client.opts.picker.note_mappings.insert_link) then
     mappings[self.client.opts.picker.note_mappings.insert_link] = {
       desc = "insert link",
-      callback = function(note_or_path)
-        ---@type obsidian.Note
-        local note
-        if Note.is_note_obj(note_or_path) then
-          note = note_or_path
-        else
-          note = Note.from_file(note_or_path)
-        end
-        local link = self.client:format_link(note, {})
-        vim.api.nvim_put({ link }, "", true, true)
+      callback = function(note_or_paths)
+        ---@type obsidian.Note[]
+        local links = vim.tbl_map(function(note_or_path)
+          local note = Note.is_note_obj(note_or_path) and note_or_path or Note.from_file(note_or_path)
+          return self.client:format_link(note, {})
+        end, note_or_paths)
+
+        vim.api.nvim_put(links, "", true, true)
         self.client:update_ui()
       end,
     }

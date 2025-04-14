@@ -22,8 +22,11 @@ local function selection_mappings(mapping)
       }
       opts.actions[name] = function(picker, item)
         picker:close()
+        local items = picker:selected { fallback = true }
         vim.schedule(function()
-          v.callback(item.value or item._path)
+          v.callback(vim.tbl_map(function(i)
+            return i._path or i.value
+          end, items))
         end)
       end
     end
