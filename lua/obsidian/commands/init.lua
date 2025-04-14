@@ -17,6 +17,7 @@ local command_lookups = {
   ObsidianNewFromTemplate = "obsidian.commands.new_from_template",
   ObsidianQuickSwitch = "obsidian.commands.quick_switch",
   ObsidianQuickSwitchRecent = "obsidian.commands.quick_switch_recent",
+  ObsidianQuickSwitchSmart = "obsidian.commands.quick_switch_smart",
   ObsidianLinkNew = "obsidian.commands.link_new",
   ObsidianLink = "obsidian.commands.link",
   ObsidianLinks = "obsidian.commands.links",
@@ -158,6 +159,7 @@ M.register("ObsidianNewFromTemplate", { opts = { nargs = "?", desc = "Create a n
 
 M.register("ObsidianQuickSwitch", { opts = { nargs = "?", desc = "Switch notes" } })
 M.register("ObsidianQuickSwitchRecent", { opts = { nargs = "?", desc = "Switch notes recent" } })
+M.register("ObsidianQuickSwitchSmart", { opts = { nargs = "?", desc = "Switch notes smart" } })
 
 M.register("ObsidianLinkNew", { opts = { nargs = "?", range = true, desc = "Link selected text to a new note" } })
 

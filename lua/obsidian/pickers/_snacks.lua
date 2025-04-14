@@ -80,6 +80,9 @@ SnacksPicker.find_files = function(self, opts)
   local source_set = opts.recent and {
     source = "recent",
     filter = { cwd = true },
+  } or opts.smart and {
+    source = "smart",
+    filter = { cwd = true },
   } or {
     source = "files",
     cwd = tostring(dir),
