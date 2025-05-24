@@ -42,9 +42,32 @@ local function collect_backlinks(client, picker, note, opts)
       prompt_title = string.format("Backlinks to '%s'", note.id)
     end
 
+    -- 設定に外だしが不要なのでハードコーディング(必要なら切り分けが必要)
+    local _selection_mappings = {
+      ["<C-CR>"] = {
+        desc = "edit_vsplit",
+        callback = function(_, items)
+          for _, item in ipairs(items) do
+            vim.cmd [[ vsplit ]]
+            util.open_buffer(item.value.path, { line = item.value.line })
+          end
+        end,
+      },
+      ["<C-s>"] = {
+        desc = "edit_split",
+        callback = function(_, items)
+          for _, item in ipairs(items) do
+            vim.cmd [[ split ]]
+            util.open_buffer(item.value.path, { line = item.value.line })
+          end
+        end,
+      },
+    }
+
     vim.schedule(function()
       picker:pick(entries, {
         prompt_title = prompt_title,
+        selection_mappings = _selection_mappings,
         callback = function(value)
           util.open_buffer(value.path, { line = value.line })
         end,
